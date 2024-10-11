@@ -11,4 +11,9 @@ output:
 
 ## Project thoughts
 
+Part 1: 
 I am interested in exploring data related to the upcoming election and polling data.
+
+Part 2:
+Which demographic of voters (grouped by age) had the largest change in the party they voted for between the 2020 and 2024 presidential elections? I hypothesize that young voters will have the greatest change of parties between elections. I believe that young voters are more inclined to change their support due to many factors. Young voters have a greater willingness to change their minds on political topics, they are less likely to feel a need for loyalty to a particular party, and are voting for their future (votes contain long term ramifications on their lives.) My outcome variable will be the percentage change from previous political party by each group. My explanatory variables will be the differing age groups of voters. Observations of larger percentage changes in party vote as ages decrease would support my hypothesis while the reverse or larger changes as age increases would disprove the hypothesis.
+
