@@ -15,5 +15,16 @@ Part 1:
 I am interested in exploring data related to the upcoming election and polling data.
 
 Part 2:
-Which demographic of voters (grouped by age) had the largest change in the party they voted for between the 2020 and 2024 presidential elections? I hypothesize that young voters will have the greatest change of parties between elections. I believe that young voters are more inclined to change their support due to many factors. Young voters have a greater willingness to change their minds on political topics, they are less likely to feel a need for loyalty to a particular party, and are voting for their future (votes contain long term ramifications on their lives.) My outcome variable will be the percentage change from previous political party by each group. My explanatory variables will be the differing age groups of voters. Observations of larger percentage changes in party vote as ages decrease would support my hypothesis while the reverse or larger changes as age increases would disprove the hypothesis.
+Which states and party had the largest voter change between the 2020 and 2024 presidential elections? I hypothesize that swing states such as:Pennsylvania, Michigan, Wisconsin, and Arizona will have the greatest change of parties between elections. I believe that these voters are more inclined to change their support due to many factors. Swing states have more diverse populations with differing views and values.The economy is also a very influential topic in swing states and relatively volatile during election cycles influencing voters opinions.  My outcome variable will be the percentage change from previous political party by each state. My explanatory variables will be the different states and the winning parties in those states. Observations of larger percentage changes in party vote for swing states would support my hypothesis while the reverse or larger changes as states become moren Democratic or Republican would disprove the hypothesis.
 
+```{r}
+library(tidyverse)
+
+pres_data_2020<-read.csv("X2020_president.csv")|>
+  filter(year==2020,party_simplified=="DEMOCRAT"|party_simplified=="REPUBLICAN")|>
+    select(state,candidatevotes,totalvotes,party_simplified)|>
+  pivot_wider(names_from = party_simplified,values_from = candidatevotes)|>
+  mutate(state_win= if_else(DEMOCRAT-REPUBLICAN>1,"Democrat","Republican"),vote_diff=(abs(DEMOCRAT-REPUBLICAN)),per_diff=vote_diff/totalvotes*100)
+ggplot(pres_data_2020,aes(x = state, y = vote_diff, fill = state_win))+geom_bar(stat = "identity")+labs(title = "Vote Difference by State in 2020 Presidential Election",x = "State",y = "Vote Difference") +theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6)) + scale_fill_manual(values = c("Democrat" = "blue", "Republican" = "red"))
+pres_data_2020
+```
