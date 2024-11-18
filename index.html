@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-1-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.28/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","X2020_president.csv"]}
+  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-1-1.png","index_files/figure-html5/unnamed-chunk-1-2.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.28/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","pres_data_2024","X2020_president.csv"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1552,33 +1552,110 @@ Which states and party had the largest voter change between the 2020 and 2024 pr
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>pres_data_2020</span><span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>"X2020_president.csv"</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
+<span><span class='va'>pres_data_2020</span><span class='op'>&lt;-</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"X2020_president.csv"</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>year</span><span class='op'>==</span><span class='fl'>2020</span>,<span class='va'>party_simplified</span><span class='op'>==</span><span class='st'>"DEMOCRAT"</span><span class='op'>|</span><span class='va'>party_simplified</span><span class='op'>==</span><span class='st'>"REPUBLICAN"</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
 <span>    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>state</span>,<span class='va'>candidatevotes</span>,<span class='va'>totalvotes</span>,<span class='va'>party_simplified</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='op'>(</span>names_from <span class='op'>=</span> <span class='va'>party_simplified</span>,values_from <span class='op'>=</span> <span class='va'>candidatevotes</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>state_win<span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>DEMOCRAT</span><span class='op'>-</span><span class='va'>REPUBLICAN</span><span class='op'>&gt;</span><span class='fl'>1</span>,<span class='st'>"Democrat"</span>,<span class='st'>"Republican"</span><span class='op'>)</span>,vote_diff<span class='op'>=</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>DEMOCRAT</span><span class='op'>-</span><span class='va'>REPUBLICAN</span><span class='op'>)</span><span class='op'>)</span>,per_diff<span class='op'>=</span><span class='va'>vote_diff</span><span class='op'>/</span><span class='va'>totalvotes</span><span class='op'>*</span><span class='fl'>100</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>pres_data_2020</span>,<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>state</span>, y <span class='op'>=</span> <span class='va'>vote_diff</span>, fill <span class='op'>=</span> <span class='va'>state_win</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Vote Difference by State in 2020 Presidential Election"</span>,x <span class='op'>=</span> <span class='st'>"State"</span>,y <span class='op'>=</span> <span class='st'>"Vote Difference"</span><span class='op'>)</span> <span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>45</span>, hjust <span class='op'>=</span> <span class='fl'>1</span>, size <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Democrat"</span> <span class='op'>=</span> <span class='st'>"blue"</span>, <span class='st'>"Republican"</span> <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span>State<span class='op'>=</span><span class='va'>state</span>,Democratic_Vote<span class='op'>=</span><span class='va'>DEMOCRAT</span>,Republican_Vote<span class='op'>=</span><span class='va'>REPUBLICAN</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>state_win<span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>Democratic_Vote</span><span class='op'>-</span><span class='va'>Republican_Vote</span><span class='op'>&gt;</span><span class='fl'>1</span>,<span class='st'>"Democrat"</span>,<span class='st'>"Republican"</span><span class='op'>)</span>,vote_diff<span class='op'>=</span><span class='op'>(</span><span class='va'>Democratic_Vote</span><span class='op'>-</span><span class='va'>Republican_Vote</span><span class='op'>)</span>,per_diff<span class='op'>=</span><span class='va'>vote_diff</span><span class='op'>/</span><span class='va'>totalvotes</span><span class='op'>*</span><span class='fl'>100</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>pres_data_2020</span>,<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>State</span>, y <span class='op'>=</span> <span class='va'>vote_diff</span>, fill <span class='op'>=</span> <span class='va'>state_win</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Vote Difference by State in 2020 Presidential Election"</span>,x <span class='op'>=</span> <span class='st'>"State"</span>,y <span class='op'>=</span> <span class='st'>"Vote Difference"</span><span class='op'>)</span> <span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>45</span>, hjust <span class='op'>=</span> <span class='fl'>1</span>, size <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Democrat"</span> <span class='op'>=</span> <span class='st'>"blue"</span>, <span class='st'>"Republican"</span> <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
 <img src="index_files/figure-html5/unnamed-chunk-1-1.png" width="624" />
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pres_data_2020</span></span></code></pre>
 </div>
 <pre><code># A tibble: 51 × 7
-   state   totalvotes DEMOCRAT REPUBLICAN state_win vote_diff per_diff
-   &lt;chr&gt;        &lt;int&gt;    &lt;int&gt;      &lt;int&gt; &lt;chr&gt;         &lt;int&gt;    &lt;dbl&gt;
- 1 ALABAMA    2323282   849624    1441170 Republic…    591546   25.5  
- 2 ALASKA      359530   153778     189951 Republic…     36173   10.1  
- 3 ARIZONA    3387326  1672143    1661686 Democrat      10457    0.309
- 4 ARKANS…    1219069   423932     760647 Republic…    336715   27.6  
- 5 CALIFO…   17500881 11110250    6006429 Democrat    5103821   29.2  
- 6 COLORA…    3279980  1804352    1364607 Democrat     439745   13.4  
- 7 CONNEC…    1823857  1080831     714717 Democrat     366114   20.1  
- 8 DELAWA…     504346   296268     200603 Democrat      95665   19.0  
- 9 DISTRI…     344356   317323      18586 Democrat     298737   86.8  
-10 FLORIDA   11067456  5297045    5668731 Republic…    371686    3.36 
+   State          totalvotes Democratic_Vote Republican_Vote state_win
+   &lt;chr&gt;               &lt;dbl&gt;           &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt;    
+ 1 ALABAMA           2323282          849624         1441170 Republic…
+ 2 ALASKA             359530          153778          189951 Republic…
+ 3 ARIZONA           3387326         1672143         1661686 Democrat 
+ 4 ARKANSAS          1219069          423932          760647 Republic…
+ 5 CALIFORNIA       17500881        11110250         6006429 Democrat 
+ 6 COLORADO          3279980         1804352         1364607 Democrat 
+ 7 CONNECTICUT       1823857         1080831          714717 Democrat 
+ 8 DELAWARE           504346          296268          200603 Democrat 
+ 9 DISTRICT OF C…     344356          317323           18586 Democrat 
+10 FLORIDA          11067456         5297045         5668731 Republic…
+# ℹ 41 more rows
+# ℹ 2 more variables: vote_diff &lt;dbl&gt;, per_diff &lt;dbl&gt;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pres_data_2024</span><span class='op'>&lt;-</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"pres_data_2024"</span><span class='op'>)</span><span class='op'>|&gt;</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>state_win<span class='op'>=</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>Democratic_Vote</span><span class='op'>-</span><span class='va'>Republican_Vote</span><span class='op'>&gt;</span><span class='fl'>1</span>,<span class='st'>"Democrat"</span>,<span class='st'>"Republican"</span><span class='op'>)</span>,vote_diff<span class='op'>=</span><span class='op'>(</span><span class='va'>Democratic_Vote</span><span class='op'>-</span><span class='va'>Republican_Vote</span><span class='op'>)</span>,totalvotes<span class='op'>=</span><span class='va'>Democratic_Vote</span><span class='op'>+</span><span class='va'>Republican_Vote</span>,per_diff<span class='op'>=</span><span class='va'>vote_diff</span><span class='op'>/</span><span class='va'>totalvotes</span><span class='op'>*</span><span class='fl'>100</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>pres_data_2024</span>,<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>State</span>, y <span class='op'>=</span> <span class='va'>vote_diff</span>, fill <span class='op'>=</span> <span class='va'>state_win</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Vote Difference by State in 2024 Presidential Election"</span>,x <span class='op'>=</span> <span class='st'>"State"</span>,y <span class='op'>=</span> <span class='st'>"Vote Difference"</span><span class='op'>)</span> <span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>45</span>, hjust <span class='op'>=</span> <span class='fl'>1</span>, size <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Democrat"</span> <span class='op'>=</span> <span class='st'>"blue"</span>, <span class='st'>"Republican"</span> <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="index_files/figure-html5/unnamed-chunk-1-2.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pres_data_2024</span></span></code></pre>
+</div>
+<pre><code># A tibble: 51 × 7
+   State           Republican_Vote Democratic_Vote state_win vote_diff
+   &lt;chr&gt;                     &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;
+ 1 Alabama                 1457704          769391 Republic…   -688313
+ 2 Alaska                   166353          123314 Republic…    -43039
+ 3 Arizona                 1746084         1561603 Republic…   -184481
+ 4 Arkansas                 758123          395788 Republic…   -362335
+ 5 California              5420962         8327114 Democrat    2906152
+ 6 Colorado                1362375         1712158 Democrat     349783
+ 7 Connecticut              739973          994474 Democrat     254501
+ 8 Delaware                 214351          289758 Democrat      75407
+ 9 DISTRICT OF CO…           20659          286787 Democrat     266128
+10 Florida                 6109596         4681046 Republic…  -1428550
+# ℹ 41 more rows
+# ℹ 2 more variables: totalvotes &lt;dbl&gt;, per_diff &lt;dbl&gt;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pres_data_2020</span><span class='op'>$</span><span class='va'>State</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span><span class='op'>(</span><span class='va'>pres_data_2020</span><span class='op'>$</span><span class='va'>State</span><span class='op'>)</span></span>
+<span><span class='va'>pres_data_2024</span><span class='op'>$</span><span class='va'>State</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span><span class='op'>(</span><span class='va'>pres_data_2024</span><span class='op'>$</span><span class='va'>State</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>pres_data_comparison</span> <span class='op'>&lt;-</span> <span class='va'>pres_data_2020</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>pres_data_2024</span>, by <span class='op'>=</span> <span class='st'>"State"</span>, suffix <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"_2020"</span>, <span class='st'>"_2024"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>diff_in_diff<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>per_diff_2020</span><span class='op'>-</span><span class='va'>per_diff_2024</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>pres_data_comparison</span></span></code></pre>
+</div>
+<pre><code># A tibble: 51 × 14
+   State     totalvotes_2020 Democratic_Vote_2020 Republican_Vote_2020
+   &lt;chr&gt;               &lt;dbl&gt;                &lt;dbl&gt;                &lt;dbl&gt;
+ 1 ALABAMA           2323282               849624              1441170
+ 2 ALASKA             359530               153778               189951
+ 3 ARIZONA           3387326              1672143              1661686
+ 4 ARKANSAS          1219069               423932               760647
+ 5 CALIFORN…        17500881             11110250              6006429
+ 6 COLORADO          3279980              1804352              1364607
+ 7 CONNECTI…         1823857              1080831               714717
+ 8 DELAWARE           504346               296268               200603
+ 9 DISTRICT…          344356               317323                18586
+10 FLORIDA          11067456              5297045              5668731
+# ℹ 41 more rows
+# ℹ 10 more variables: state_win_2020 &lt;chr&gt;, vote_diff_2020 &lt;dbl&gt;,
+#   per_diff_2020 &lt;dbl&gt;, Republican_Vote_2024 &lt;dbl&gt;,
+#   Democratic_Vote_2024 &lt;dbl&gt;, state_win_2024 &lt;chr&gt;,
+#   vote_diff_2024 &lt;dbl&gt;, totalvotes_2024 &lt;dbl&gt;, per_diff_2024 &lt;dbl&gt;,
+#   diff_in_diff &lt;dbl&gt;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>arranged_data</span> <span class='op'>&lt;-</span> <span class='va'>pres_data_comparison</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>diff_in_diff</span><span class='op'>)</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>State</span>,<span class='va'>diff_in_diff</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>arranged_data</span></span></code></pre>
+</div>
+<pre><code># A tibble: 51 × 2
+   State         diff_in_diff
+   &lt;chr&gt;                &lt;dbl&gt;
+ 1 NEW YORK             11.2 
+ 2 NEW JERSEY           10.3 
+ 3 FLORIDA               9.88
+ 4 TEXAS                 8.45
+ 5 CALIFORNIA            8.02
+ 6 MASSACHUSETTS         7.99
+ 7 MISSISSIPPI           7.77
+ 8 NEW HAMPSHIRE         7.35
+ 9 ILLINOIS              6.95
+10 TENNESSEE             6.91
 # ℹ 41 more rows</code></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>My findings are actually the opposite of what my hypothesis was. States that traditionally are steadfast Democratic or Republican were the ones with the highest rates of change.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

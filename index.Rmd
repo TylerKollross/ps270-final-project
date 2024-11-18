@@ -20,11 +20,33 @@ Which states and party had the largest voter change between the 2020 and 2024 pr
 ```{r}
 library(tidyverse)
 
-pres_data_2020<-read.csv("X2020_president.csv")|>
+pres_data_2020<-read_csv("X2020_president.csv")|>
   filter(year==2020,party_simplified=="DEMOCRAT"|party_simplified=="REPUBLICAN")|>
     select(state,candidatevotes,totalvotes,party_simplified)|>
   pivot_wider(names_from = party_simplified,values_from = candidatevotes)|>
-  mutate(state_win= if_else(DEMOCRAT-REPUBLICAN>1,"Democrat","Republican"),vote_diff=(abs(DEMOCRAT-REPUBLICAN)),per_diff=vote_diff/totalvotes*100)
-ggplot(pres_data_2020,aes(x = state, y = vote_diff, fill = state_win))+geom_bar(stat = "identity")+labs(title = "Vote Difference by State in 2020 Presidential Election",x = "State",y = "Vote Difference") +theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6)) + scale_fill_manual(values = c("Democrat" = "blue", "Republican" = "red"))
+  rename(State=state,Democratic_Vote=DEMOCRAT,Republican_Vote=REPUBLICAN)|>
+  mutate(state_win= if_else(Democratic_Vote-Republican_Vote>1,"Democrat","Republican"),vote_diff=(Democratic_Vote-Republican_Vote),per_diff=vote_diff/totalvotes*100)
+
+ggplot(pres_data_2020,aes(x = State, y = vote_diff, fill = state_win))+geom_bar(stat = "identity")+labs(title = "Vote Difference by State in 2020 Presidential Election",x = "State",y = "Vote Difference") +theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6)) + scale_fill_manual(values = c("Democrat" = "blue", "Republican" = "red"))
 pres_data_2020
+
+pres_data_2024<-read_csv("pres_data_2024")|>mutate(state_win=if_else(Democratic_Vote-Republican_Vote>1,"Democrat","Republican"),vote_diff=(Democratic_Vote-Republican_Vote),totalvotes=Democratic_Vote+Republican_Vote,per_diff=vote_diff/totalvotes*100)
+
+ggplot(pres_data_2024,aes(x = State, y = vote_diff, fill = state_win))+geom_bar(stat = "identity")+labs(title = "Vote Difference by State in 2024 Presidential Election",x = "State",y = "Vote Difference") +theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6)) + scale_fill_manual(values = c("Democrat" = "blue", "Republican" = "red"))
+pres_data_2024
+
+pres_data_2020$State <-toupper(pres_data_2020$State)
+pres_data_2024$State <-toupper(pres_data_2024$State)
+
+pres_data_comparison <- pres_data_2020 |>
+  left_join(pres_data_2024, by = "State", suffix = c("_2020", "_2024"))|>
+  mutate(diff_in_diff=abs(per_diff_2020-per_diff_2024))
+pres_data_comparison
+
+arranged_data <- pres_data_comparison |>
+  arrange(desc(diff_in_diff))|>
+  select(State,diff_in_diff)
+
+arranged_data
 ```
+My findings are actually the opposite of what my hypothesis was. States that traditionally are steadfast Democratic or Republican were the ones with the highest rates of change. 
