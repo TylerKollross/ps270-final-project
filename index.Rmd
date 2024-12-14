@@ -71,8 +71,10 @@ diff_in_diff_graph<-ggplot(pres_data_comparison, aes(x = State, y = diff_in_diff
 
 lm_model <- lm(diff_in_diff ~ state_type, data = pres_data_comparison)
 
-summary(lm_model)
 ```
+
+
+
 
 
 
