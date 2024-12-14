@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-1-1.png","index_files/figure-html5/unnamed-chunk-1-2.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.28/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","pres_data_2024","X2020_president.csv"]}
+  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-1-1.png","index_files/figure-html5/unnamed-chunk-1-2.png","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/figure-html5/unnamed-chunk-5-2.png","index_files/figure-html5/unnamed-chunk-5-3.png","index_files/figure-html5/unnamed-chunk-6-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.28/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","pres_data_2024","X2020_president.csv"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1544,10 +1544,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 <div class="d-article">
 <h2 id="project-thoughts">Project thoughts</h2>
-<p>Part 1:
-I am interested in exploring data related to the upcoming election and polling data.</p>
-<p>Part 2:
-Which states and party had the largest voter change between the 2020 and 2024 presidential elections? I hypothesize that swing states such as:Pennsylvania, Michigan, Wisconsin, and Arizona will have the greatest change of parties between elections. I believe that these voters are more inclined to change their support due to many factors. Swing states have more diverse populations with differing views and values.The economy is also a very influential topic in swing states and relatively volatile during election cycles influencing voters opinions. My outcome variable will be the percentage change from previous political party by each state. My explanatory variables will be the different states and the winning parties in those states. Observations of larger percentage changes in party vote for swing states would support my hypothesis while the reverse or larger changes as states become moren Democratic or Republican would disprove the hypothesis.</p>
+<p>Code:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
@@ -1559,11 +1556,10 @@ Which states and party had the largest voter change between the 2020 and 2024 pr
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span>State<span class='op'>=</span><span class='va'>state</span>,Democratic_Vote<span class='op'>=</span><span class='va'>DEMOCRAT</span>,Republican_Vote<span class='op'>=</span><span class='va'>REPUBLICAN</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>state_win<span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>Democratic_Vote</span><span class='op'>-</span><span class='va'>Republican_Vote</span><span class='op'>&gt;</span><span class='fl'>1</span>,<span class='st'>"Democrat"</span>,<span class='st'>"Republican"</span><span class='op'>)</span>,vote_diff<span class='op'>=</span><span class='op'>(</span><span class='va'>Democratic_Vote</span><span class='op'>-</span><span class='va'>Republican_Vote</span><span class='op'>)</span>,per_diff<span class='op'>=</span><span class='va'>vote_diff</span><span class='op'>/</span><span class='va'>totalvotes</span><span class='op'>*</span><span class='fl'>100</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>pres_data_2020</span>,<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>State</span>, y <span class='op'>=</span> <span class='va'>vote_diff</span>, fill <span class='op'>=</span> <span class='va'>state_win</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Vote Difference by State in 2020 Presidential Election"</span>,x <span class='op'>=</span> <span class='st'>"State"</span>,y <span class='op'>=</span> <span class='st'>"Vote Difference"</span><span class='op'>)</span> <span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>45</span>, hjust <span class='op'>=</span> <span class='fl'>1</span>, size <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Democrat"</span> <span class='op'>=</span> <span class='st'>"blue"</span>, <span class='st'>"Republican"</span> <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
-</div>
-<img src="index_files/figure-html5/unnamed-chunk-1-1.png" width="624" />
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pres_data_2020</span></span></code></pre>
+<span></span>
+<span></span>
+<span><span class='va'>plot_2020</span><span class='op'>&lt;-</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>pres_data_2020</span>,<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>State</span>, y <span class='op'>=</span> <span class='va'>vote_diff</span>, fill <span class='op'>=</span> <span class='va'>state_win</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Vote Difference by State in 2020 Presidential Election"</span>,x <span class='op'>=</span> <span class='st'>"State"</span>,y <span class='op'>=</span> <span class='st'>"Vote Difference"</span><span class='op'>)</span> <span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>45</span>, hjust <span class='op'>=</span> <span class='fl'>1</span>, size <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Democrat"</span> <span class='op'>=</span> <span class='st'>"blue"</span>, <span class='st'>"Republican"</span> <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>pres_data_2020</span></span></code></pre>
 </div>
 <pre><code># A tibble: 51 × 7
    State          totalvotes Democratic_Vote Republican_Vote state_win
@@ -1580,14 +1576,13 @@ Which states and party had the largest voter change between the 2020 and 2024 pr
 10 FLORIDA          11067456         5297045         5668731 Republic…
 # ℹ 41 more rows
 # ℹ 2 more variables: vote_diff &lt;dbl&gt;, per_diff &lt;dbl&gt;</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pres_data_2024</span><span class='op'>&lt;-</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"pres_data_2024"</span><span class='op'>)</span><span class='op'>|&gt;</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>state_win<span class='op'>=</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>Democratic_Vote</span><span class='op'>-</span><span class='va'>Republican_Vote</span><span class='op'>&gt;</span><span class='fl'>1</span>,<span class='st'>"Democrat"</span>,<span class='st'>"Republican"</span><span class='op'>)</span>,vote_diff<span class='op'>=</span><span class='op'>(</span><span class='va'>Democratic_Vote</span><span class='op'>-</span><span class='va'>Republican_Vote</span><span class='op'>)</span>,totalvotes<span class='op'>=</span><span class='va'>Democratic_Vote</span><span class='op'>+</span><span class='va'>Republican_Vote</span>,per_diff<span class='op'>=</span><span class='va'>vote_diff</span><span class='op'>/</span><span class='va'>totalvotes</span><span class='op'>*</span><span class='fl'>100</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>pres_data_2024</span>,<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>State</span>, y <span class='op'>=</span> <span class='va'>vote_diff</span>, fill <span class='op'>=</span> <span class='va'>state_win</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Vote Difference by State in 2024 Presidential Election"</span>,x <span class='op'>=</span> <span class='st'>"State"</span>,y <span class='op'>=</span> <span class='st'>"Vote Difference"</span><span class='op'>)</span> <span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>45</span>, hjust <span class='op'>=</span> <span class='fl'>1</span>, size <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Democrat"</span> <span class='op'>=</span> <span class='st'>"blue"</span>, <span class='st'>"Republican"</span> <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
-</div>
-<img src="index_files/figure-html5/unnamed-chunk-1-2.png" width="624" />
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pres_data_2024</span></span></code></pre>
+<span><span class='va'>plot_2024</span><span class='op'>&lt;-</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>pres_data_2024</span>,<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>State</span>, y <span class='op'>=</span> <span class='va'>vote_diff</span>, fill <span class='op'>=</span> <span class='va'>state_win</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Vote Difference by State in 2024 Presidential Election"</span>,x <span class='op'>=</span> <span class='st'>"State"</span>,y <span class='op'>=</span> <span class='st'>"Vote Difference"</span><span class='op'>)</span> <span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>45</span>, hjust <span class='op'>=</span> <span class='fl'>1</span>, size <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Democrat"</span> <span class='op'>=</span> <span class='st'>"blue"</span>, <span class='st'>"Republican"</span> <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>pres_data_2024</span></span></code></pre>
 </div>
 <pre><code># A tibble: 51 × 7
    State           Republican_Vote Democratic_Vote state_win vote_diff
@@ -1604,6 +1599,8 @@ Which states and party had the largest voter change between the 2020 and 2024 pr
 10 Florida                 6109596         4681046 Republic…  -1428550
 # ℹ 41 more rows
 # ℹ 2 more variables: totalvotes &lt;dbl&gt;, per_diff &lt;dbl&gt;</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pres_data_2020</span><span class='op'>$</span><span class='va'>State</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span><span class='op'>(</span><span class='va'>pres_data_2020</span><span class='op'>$</span><span class='va'>State</span><span class='op'>)</span></span>
 <span><span class='va'>pres_data_2024</span><span class='op'>$</span><span class='va'>State</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span><span class='op'>(</span><span class='va'>pres_data_2024</span><span class='op'>$</span><span class='va'>State</span><span class='op'>)</span></span>
@@ -1611,9 +1608,16 @@ Which states and party had the largest voter change between the 2020 and 2024 pr
 <span><span class='va'>pres_data_comparison</span> <span class='op'>&lt;-</span> <span class='va'>pres_data_2020</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>pres_data_2024</span>, by <span class='op'>=</span> <span class='st'>"State"</span>, suffix <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"_2020"</span>, <span class='st'>"_2024"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>diff_in_diff<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>per_diff_2020</span><span class='op'>-</span><span class='va'>per_diff_2024</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>pres_data_comparison</span> <span class='op'>&lt;-</span> <span class='va'>pres_data_comparison</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>state_type <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
+<span>    <span class='va'>state_win_2020</span> <span class='op'>==</span> <span class='st'>"Democrat"</span> <span class='op'>&amp;</span> <span class='va'>state_win_2024</span> <span class='op'>==</span> <span class='st'>"Democrat"</span> <span class='op'>~</span> <span class='st'>"Democrat"</span>,</span>
+<span>    <span class='va'>state_win_2020</span> <span class='op'>==</span> <span class='st'>"Republican"</span> <span class='op'>&amp;</span> <span class='va'>state_win_2024</span> <span class='op'>==</span> <span class='st'>"Republican"</span> <span class='op'>~</span> <span class='st'>"Republican"</span>,</span>
+<span>    <span class='va'>state_win_2020</span> <span class='op'>!=</span> <span class='va'>state_win_2024</span> <span class='op'>~</span> <span class='st'>"Swing"</span>,<span class='cn'>TRUE</span> <span class='op'>~</span> <span class='st'>"Swing"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
 <span><span class='va'>pres_data_comparison</span></span></code></pre>
 </div>
-<pre><code># A tibble: 51 × 14
+<pre><code># A tibble: 51 × 15
    State     totalvotes_2020 Democratic_Vote_2020 Republican_Vote_2020
    &lt;chr&gt;               &lt;dbl&gt;                &lt;dbl&gt;                &lt;dbl&gt;
  1 ALABAMA           2323282               849624              1441170
@@ -1627,11 +1631,13 @@ Which states and party had the largest voter change between the 2020 and 2024 pr
  9 DISTRICT…          344356               317323                18586
 10 FLORIDA          11067456              5297045              5668731
 # ℹ 41 more rows
-# ℹ 10 more variables: state_win_2020 &lt;chr&gt;, vote_diff_2020 &lt;dbl&gt;,
+# ℹ 11 more variables: state_win_2020 &lt;chr&gt;, vote_diff_2020 &lt;dbl&gt;,
 #   per_diff_2020 &lt;dbl&gt;, Republican_Vote_2024 &lt;dbl&gt;,
 #   Democratic_Vote_2024 &lt;dbl&gt;, state_win_2024 &lt;chr&gt;,
 #   vote_diff_2024 &lt;dbl&gt;, totalvotes_2024 &lt;dbl&gt;, per_diff_2024 &lt;dbl&gt;,
-#   diff_in_diff &lt;dbl&gt;</code></pre>
+#   diff_in_diff &lt;dbl&gt;, state_type &lt;chr&gt;</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>arranged_data</span> <span class='op'>&lt;-</span> <span class='va'>pres_data_comparison</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>diff_in_diff</span><span class='op'>)</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
@@ -1653,9 +1659,96 @@ Which states and party had the largest voter change between the 2020 and 2024 pr
  9 ILLINOIS              6.95
 10 TENNESSEE             6.91
 # ℹ 41 more rows</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pres_data_comparison</span><span class='op'>$</span><span class='va'>state_type</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>pres_data_comparison</span><span class='op'>$</span><span class='va'>state_type</span>,levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Swing"</span>, <span class='st'>"Democrat"</span>, <span class='st'>"Republican"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>diff_in_diff_graph</span><span class='op'>&lt;-</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>pres_data_comparison</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>State</span>, y <span class='op'>=</span> <span class='va'>diff_in_diff</span>, fill <span class='op'>=</span> <span class='va'>state_type</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Distribution of Absolute Vote Difference (2020-2024)"</span>, y <span class='op'>=</span> <span class='st'>"Absolute Vote Change (%)"</span>,fill<span class='op'>=</span><span class='st'>"State Type"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>45</span>, hjust <span class='op'>=</span> <span class='fl'>1</span>, size <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Democrat"</span> <span class='op'>=</span> <span class='st'>"blue"</span>, <span class='st'>"Republican"</span> <span class='op'>=</span> <span class='st'>"red"</span>, <span class='st'>"Swing"</span> <span class='op'>=</span> <span class='st'>"purple"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>lm_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>diff_in_diff</span> <span class='op'>~</span> <span class='va'>state_type</span>, data <span class='op'>=</span> <span class='va'>pres_data_comparison</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>lm_model</span><span class='op'>)</span></span></code></pre>
 </div>
-<p>My findings are actually the opposite of what my hypothesis was. States that traditionally are steadfast Democratic or Republican were the ones with the highest rates of change.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<pre><code>
+Call:
+lm(formula = diff_in_diff ~ state_type, data = pres_data_comparison)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.8008 -1.9537 -0.4252  1.7448  6.3357 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            4.2860     0.9796   4.375 6.51e-05 ***
+state_typeDemocrat     0.5556     1.1459   0.485    0.630    
+state_typeRepublican   0.2712     1.1083   0.245    0.808    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 2.592 on 48 degrees of freedom
+Multiple R-squared:  0.005583,  Adjusted R-squared:  -0.03585 
+F-statistic: 0.1348 on 2 and 48 DF,  p-value: 0.8743</code></pre>
+</div>
+<p>Introduction:</p>
+<p>The focus of this research project is to analyze the extent of party change in voting behavior between the 2020 and 2024 U.S. presidential elections, with an emphasis on swing states. The research question is: Which states and political parties experienced the largest changes in voter support between the 2020 and 2024 elections? The hypothesis states that swing states, such as Pennsylvania, Michigan, Wisconsin, and Arizona, will experience the most significant shifts in voter support between the two election cycles. This hypothesis is based on the idea that swing states, which often have more diverse populations and closer margins between parties, are more likely to exhibit voter changes compared to solidly partisan states. Moreover, factors such as changes in economic conditions, local policies, and national political trends are expected to contribute to these shifts, making these states more susceptible to changes in party support. The outcome of this research is particularly relevant for understanding the dynamics of future elections, as large shifts in swing states could have a substantial impact on the overall election results.</p>
+<p>This study is interesting because it provides insights into the political landscape of the United States, especially as political polarization and voter behavior continue to change. By identifying states with significant vote changes and understanding the reasons behind them, political campaigns, analysts, and scholars can better predict voting trends in upcoming elections.</p>
+<p>Data:</p>
+<p>The data used for this analysis comes from the official U.S. Presidential Election results for the 2020 and 2024 elections. These results were sourced from publicly available data sets that aggregate the total number of votes for the Democratic and Republican parties at the state level. Specifically, the data for the 2020 election was obtained from the official U.S. election results, while the 2024 election data was collected from projected results (or in-progress data, depending on the availability)</p>
+<p>The key dependent variable is the absolute difference in the percentage point change in the vote share between the two election cycles (2020 and 2024) for the Democratic and Republican parties. This variable measures the magnitude of the shift in voter support for the two major parties across the two elections. Specifically, it captures the difference between the vote share difference (Democratic votes minus Republican votes) in 2024 and 2020. Larger values of this variable indicate greater changes in party support between the two elections. The diff_in_diff variable is computed as the absolute change in the vote share percentage between the two elections. For each state, the difference in the vote share between the Democratic and Republican candidates in 2020 and 2024 is calculated, then the absolute value of the difference is taken to ensure that all shifts are considered, regardless of the direction of the change.</p>
+<p>The primary independent variable is the type of state, categorized into three types: Democratic (solidly Democratic states), Republican (solidly Republican states), and Swing (states where the vote margin between the two parties is typically close and can shift between elections). This variable is used to examine whether the type of state is associated with the magnitude of party support change.The state_type variable is coded based on historical party leanings. States like California and New York are categorized as Democratic, while Texas and Florida are coded as Republican. States like Michigan and Arizona are categorized as Swing, based on recent election history where the margin of victory is narrow and tends to fluctuate between the two major parties.</p>
+<p>This project uses a cross-sectional design, comparing two points in time (2020 and 2024 elections) to analyze changes in voting behavior across different states. By examining the change in vote support between these two elections, we can assess the relative magnitude of shifts in party preference and how they vary across states categorized by party leanings (Democratic, Republican, or Swing). This research compares state-level data from two separate election cycles.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>plot_2020</span></span></code></pre>
+</div>
+<img src="index_files/figure-html5/unnamed-chunk-5-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>plot_2024</span></span></code></pre>
+</div>
+<img src="index_files/figure-html5/unnamed-chunk-5-2.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>pres_data_comparison</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>State</span>, y <span class='op'>=</span> <span class='va'>diff_in_diff</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span><span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>45</span>, hjust <span class='op'>=</span> <span class='fl'>1</span>, size <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>y <span class='op'>=</span> <span class='st'>"Absolute Vote Change (%)"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-5-3.png" width="624" /></p>
+</div>
+<p>Results:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>diff_in_diff_graph</span></span></code></pre>
+</div>
+<img src="index_files/figure-html5/unnamed-chunk-6-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>lm_model</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+Call:
+lm(formula = diff_in_diff ~ state_type, data = pres_data_comparison)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.8008 -1.9537 -0.4252  1.7448  6.3357 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            4.2860     0.9796   4.375 6.51e-05 ***
+state_typeDemocrat     0.5556     1.1459   0.485    0.630    
+state_typeRepublican   0.2712     1.1083   0.245    0.808    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 2.592 on 48 degrees of freedom
+Multiple R-squared:  0.005583,  Adjusted R-squared:  -0.03585 
+F-statistic: 0.1348 on 2 and 48 DF,  p-value: 0.8743</code></pre>
+</div>
+<p>The main coefficient of interest in this regression is the effect of state type on the absolute difference in vote share (diff_in_diff). Specifically, we compared three categories of states: Democratic, Republican, and Swing states.The intercept of the regression (4.29) represents the average vote difference in swing states, this is the baseline value for the model.</p>
+<p>The coefficient for Democrat state_type (0.56) suggests that, on average, Democratic states had a 0.56% larger change in vote difference between 2020 and 2024 compared to swing states. However, this coefficient is not statistically significant (p-value = 0.63), meaning we cannot be confident that the difference in vote change between Democratic and swing states is meaningful or not due to random chance.</p>
+<p>The coefficient for Republican state_type (0.27) indicates that Republican states experienced an average change in vote difference of 0.27% larger than swing states, but again, this difference is also not statistically significant (p-value = 0.81). This suggests that Republican states did not exhibit a noticeably larger shift in vote preferences compared to swing states.</p>
+<p>Both the Democrat and Republican state coefficients have high p-values (0.63 and 0.81), which is above the typical significance level of 0.05. This means that neither coefficient is statistically significant, and we cannot conclude that there is a statistical relationship between state type and the change in vote share between the 2020 and 2024 elections.</p>
+<p>Conclusion:</p>
+<p>In this project, I analyzed changes in voter support between the 2020 and 2024 U.S. presidential elections, specifically focusing on swing states and comparing them to solidly Democratic and Republican states. The regression results showed that the type of state, Democratic, Republican, or Swing, was not statistically significant in explaining the extent of the change in vote difference, providing no support for the hypothesis that swing states would experience the largest shifts in voter behavior. While the results suggest that state type does not play a significant role in vote changes, there are limitations in the analysis, including the exclusion of important variables such as economic conditions, demographic shifts, or campaign strategies, which may also influence voting behavior. Additionally, the model’s low explanatory power (R-squared) indicates that other factors, likely account for the observed vote changes. To improve the analysis, future research could incorporate more specific data, such as voter demographics, economic indicators, or state-level policy changes.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
